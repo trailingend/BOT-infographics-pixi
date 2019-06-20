@@ -1,9 +1,10 @@
 import * as PIXI from 'pixi.js';
-import { TweenMax, Power3 } from "gsap/TweenMax";
+import { TweenMax, TimelineLite, Power3 } from "gsap/TweenMax";
 import { itemPositions } from './utils';
 
 import '../assets/images/road.png';
 import '../assets/images/bench1.png';
+import '../assets/images/bench2.png';
 import '../assets/images/house1.png';
 import '../assets/images/house2.png';
 import '../assets/images/house3.png';
@@ -12,13 +13,13 @@ import '../assets/images/house5.png';
 import '../assets/images/fountain1.png';
 import '../assets/images/building1.png';
 import '../assets/images/hospital1.png';
-import '../assets/images/plant1.png';
-import '../assets/images/light1.png';
 import '../assets/images/car1.png';
 import '../assets/images/ambulance1.png';
 import '../assets/images/tree1.png';
 import '../assets/images/tree2.png';
 import '../assets/images/sign1.png';
+import '../assets/images/light1.png';
+import '../assets/images/traffic1.png';
 
 
 class Game {
@@ -30,10 +31,11 @@ class Game {
 
         this.app = null;
         this.graphics = null;
+        this.camera = null;
         this.container = null;
         this.loader = null;
-        this.itemNames = ['road', 'fountain1', 'bench1', 'tree1', 'tree2',
-                          'hospital1', 'building1', 'light1', 
+        this.itemNames = ['road', 'fountain1', 'bench1', 'bench2', 'tree1', 'tree2',
+                          'hospital1', 'building1', 'light1', 'traffic1', 'sign1',
                           'house1', 'house2', 'house3', 'house4', 'house5',
                           ];
         this.sprites = {};
@@ -62,7 +64,7 @@ class Game {
             height: winH, 
             // resolution: window.devicePixelRatio,
             antialias: false, 
-            backgroundColor : 0xeeeeee
+            backgroundColor : 0xd4dc5f
         });
         this.stageContainer.appendChild(this.app.view);
 
@@ -71,17 +73,17 @@ class Game {
         this.container.y = this.app.screen.height / 2;
         this.app.stage.addChild(this.container);
 
-        this.graphics = new PIXI.Graphics();
-        this.graphics.beginFill(0xd4dc5f, 1);
-        this.graphics.drawRect(0, 0, this.stageSize[0] * this.scale, this.stageSize[1] * this.scale);
-        this.graphics.position.x = - this.graphics.width / 2;
-        this.graphics.position.y = - this.graphics.height / 2;
-        this.graphics.interactive = true;
-        this.graphics.on('pointerdown', (e) => { this.onPressDown(e); });
-        this.graphics.on('pointermove', (e) => { this.onPressMove(e); });
-        this.graphics.on('pointerup', (e) => { this.onPressUp(e); });
-        this.graphics.on('pointerupoutside', (e) => { this.onPressUp(e); });
-        this.container.addChild(this.graphics);
+        // this.graphics = new PIXI.Graphics();
+        // this.graphics.beginFill(0xd4dc5f, 1);
+        // this.graphics.drawRect(0, 0, this.stageSize[0] * this.scale, this.stageSize[1] * this.scale);
+        // this.graphics.position.x = - this.graphics.width / 2;
+        // this.graphics.position.y = - this.graphics.height / 2;
+        this.container.interactive = true;
+        this.container.on('pointerdown', (e) => { this.onPressDown(e); });
+        this.container.on('pointermove', (e) => { this.onPressMove(e); });
+        this.container.on('pointerup', (e) => { this.onPressUp(e); });
+        // this.grapcontainerhics.on('pointerupoutside', (e) => { this.onPressUp(e); });
+        // this.container.addChild(this.graphics);
     }
 
     loadAssets() {
@@ -104,14 +106,24 @@ class Game {
                 let multiSprites = [];
                 itemPositions[key].forEach((itemPos) => {
                     let spriteItem = new PIXI.Sprite(value.texture);
-                    this.setPosition(spriteItem, itemPos);
+                    this.initGrowAndBounce(spriteItem, itemPos);
+                    this.animateGrowAndBounce(spriteItem, itemPos);
                     this.app.stage.addChild(spriteItem);
                     multiSprites.push(spriteItem);
                 });
                 this.sprites[key] = multiSprites;
             } else {
                 let spriteItem = new PIXI.Sprite(value.texture);
-                this.setPosition(spriteItem, itemPositions[key]);
+                
+                if (key === 'road') {
+                    this.initStatic(spriteItem, itemPositions[key]);
+                } else if (key === 'fountain1' || key === 'hospital1' || key === 'building1') {
+                    this.initGrowAndBounce(spriteItem, itemPositions[key]);
+                    this.animateGrowAndBounce(spriteItem, itemPositions[key], itemPositions[key].delay);
+                } else {
+                    this.initGrowAndBounce(spriteItem, itemPositions[key]);
+                    this.animateGrowAndBounce(spriteItem, itemPositions[key]);
+                }
                 this.app.stage.addChild(spriteItem);
                 this.sprites[key] = spriteItem;
             }
@@ -119,12 +131,42 @@ class Game {
         console.log(this.sprites)
     }
 
-    setPosition(spriteItem, itemPos) {
+    initStatic(spriteItem, itemPos) {
         spriteItem.anchor.set(0.5);
         spriteItem.x = itemPos.x * this.scale;
         spriteItem.y = itemPos.y * this.scale;
         spriteItem.width = itemPos.w * this.scale;
         spriteItem.height = itemPos.h * this.scale;
+    }
+
+    initGrowAndBounce(spriteItem, itemPos) {
+        spriteItem.anchor.set(0.5);
+        spriteItem.x = itemPos.x * this.scale;
+        spriteItem.y = itemPos.y * this.scale;
+        spriteItem.width = 0;
+        spriteItem.height = 0;
+        // spriteItem.scale = -1;
+    }
+
+    animateGrowAndBounce(spriteItem, itemPos, delay=Math.random() + 0.2) {
+        var animation = new TimelineLite()
+        animation.delay(delay);
+        animation.fromTo(spriteItem, 0.2, {
+            width: 0, 
+            height: 0,
+        }, {
+            width: itemPos.w * this.scale * 1.05, 
+            height: itemPos.h * this.scale * 1.05,
+        }).to(spriteItem, 0.15, {
+            width: itemPos.w * this.scale * 0.98, 
+            height: itemPos.h * this.scale * 0.98, 
+        }).to(spriteItem, 0.17, {
+            width: itemPos.w * this.scale * 1.01, 
+            height: itemPos.h * this.scale * 1.01, 
+        }).to(spriteItem, 0.2, {
+            width: itemPos.w * this.scale, 
+            height: itemPos.h * this.scale, 
+        });
     }
 
     onPressDown(e) {
