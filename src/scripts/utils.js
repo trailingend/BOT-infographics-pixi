@@ -65,16 +65,18 @@ export const testPlatform = () => {
 }
 
 export const itemPositions = {
-    'road': { x: 1047, y: 719, w: 1990, h: 975 },
+    'road': { x: 1090, y: 864, w: 2076, h: 1265 },
+    'mask': { x: 519, y: 386, w: 697, h: 583 },
     'hospital1': { x: 514, y: 356, w: 713, h: 654, delay: 0 },
     'building1': { x: 1306, y: 376, w: 366, h: 370, delay: 0.1 },
-    'house1': { x: 863, y: 834, w: 272, h: 207 },
-    'house2': [{ x: 658, y: 963, w: 223, h: 188 },
-               { x: 1579, y: 722, w: 222, h: 188 }],
-    'house3': { x: 1375, y: 837, w: 205, h: 218 },
-    'house4': { x: 1533, y: 930, w: 206, h: 192 },
-    'house5': { x: 1720, y: 830, w: 197, h: 210 },
-    'fountain1': { x: 1145, y: 578, w: 316, h: 203, delay: 0.15 },
+    'house1': { x: 863, y: 834, w: 272, h: 207, delay: 0.2 },
+    'house2': [{ x: 658, y: 963, w: 223, h: 188, delay: 0.2 },
+               { x: 1579, y: 722, w: 222, h: 188, delay: 0.2 }],
+    'house3': { x: 1375, y: 837, w: 205, h: 218, delay: 0.2 },
+    'house4': [{ x: 1533, y: 930, w: 206, h: 192, delay: 0.2 },
+               { x: 1132, y: 993, w: 206, h: 192, delay: 0.2 }],
+    'house5': { x: 1720, y: 830, w: 197, h: 210, delay: 0.2 },
+    'fountain1': { x: 1145, y: 578, w: 316, h: 203, delay: 0 },
     'bench1': [{ x: 738, y: 758, w: 69, h: 63 },
                { x: 642, y: 812, w: 69, h: 63 },
                { x: 650, y: 709, w: 69, h: 63 },
@@ -103,9 +105,56 @@ export const itemPositions = {
               { x: 622, y: 649, w: 37, h: 43 },
               { x: 516, y: 711, w: 37, h: 43 },
               { x: 416, y: 762, w: 37, h: 43 }],
+    'tree3': [{ x: 1110, y: 333, w: 54, h: 87 },
+              { x: 1458, y: 520, w: 54, h: 87 }],
     'light1': [{ x: 365, y: 679, w: 22, h: 99 },
                { x: 898, y: 377, w: 22, h: 99 }],
     'sign1': { x: 990, y: 683, w: 36, h: 95 },
     'traffic1': { x: 1027, y: 825, w: 28, h: 117 },
 
 }
+
+export const hospitalInfo = [{
+        name: 'All',
+        color: '0xf15d3f',   
+    }, {
+        name: 'Vancouver',
+        color: '0xff822e',   
+    }, {
+        name: 'Richmond',
+        color: '0xffcf04',   
+    }, {
+        name: 'Costal',
+        color: '0xaed630',   
+    }, {
+        name: 'North Vancouver',
+        color: '0x739849',   
+    }, {
+        name: 'Squamish',
+        color: '0x44c8f5',   
+    }, {
+        name: 'Powell River',
+        color: '0x0c5d8f',   
+    }, {
+        name: 'Sechelt',
+        color: '0x904799',   
+    }, {
+        name: 'Whistler & Pemberton',
+        color: '0xf46ea5',   
+    }];
+
+    export const maskPath = [
+        0, 232.1,
+        0.6, 473.2,
+        190.1, 583,
+        387, 465.3,
+        419.7, 486.3, 
+        689.8, 326.9,
+        689.4, 292.7,
+        691.7, 256.6,
+        696.1, 253.9,
+        697.5, 164.1,
+        666.9, 118.5,
+        666.7, 79.3,
+        484.4, 0
+    ];

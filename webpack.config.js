@@ -63,7 +63,7 @@ module.exports = (env, argv) => {
                     "postcss-loader"
                 ],
             }, {
-                test: /\.(png|jpe?g|gif)$/,
+                test: /\.(png|jpe?g|gif|svg)$/,
                 loaders: [{
                     loader: "file-loader",
                     options: {

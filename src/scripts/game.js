@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { TweenMax, TimelineLite, Power3 } from "gsap/TweenMax";
-import { itemPositions } from './utils';
+import { itemPositions, hospitalInfo, maskPath } from './utils';
 
 import '../assets/images/road.png';
 import '../assets/images/bench1.png';
@@ -13,10 +13,12 @@ import '../assets/images/house5.png';
 import '../assets/images/fountain1.png';
 import '../assets/images/building1.png';
 import '../assets/images/hospital1.png';
+import '../assets/images/mask.svg';
 import '../assets/images/car1.png';
 import '../assets/images/ambulance1.png';
 import '../assets/images/tree1.png';
 import '../assets/images/tree2.png';
+import '../assets/images/tree3.png';
 import '../assets/images/sign1.png';
 import '../assets/images/light1.png';
 import '../assets/images/traffic1.png';
@@ -27,6 +29,7 @@ class Game {
         this.body = document.querySelector("body");
         this.stageContainer = document.querySelector('#main-stage');
         this.stageSize = [1920, 1080];
+        this.maskPos = [142, 82, 698 * 0.826, 583 * 0.826];
         this.positions = itemPositions;
 
         this.app = null;
@@ -34,9 +37,10 @@ class Game {
         this.camera = null;
         this.container = null;
         this.loader = null;
-        this.itemNames = ['road', 'fountain1', 'bench1', 'bench2', 'tree1', 'tree2',
-                          'hospital1', 'building1', 'light1', 'traffic1', 'sign1',
+        this.itemNames = ['road', 'fountain1', 'tree1', 'hospital1',
+                          'mask', 'building1', 'tree3', 'bench1', 'bench2',
                           'house1', 'house2', 'house3', 'house4', 'house5',
+                          'tree2', 'light1', 'traffic1', 'sign1',
                           ];
         this.sprites = {};
 
@@ -45,9 +49,11 @@ class Game {
         this.isMouseDown = false;
 
         this.pointerStartPos;
-        this.graphicsStartPos;
+        this.containerStartPos;
         this.zoomed = false;
         this.scale = 1; 
+
+        
     }
 
     init(winW, winH) {
@@ -67,28 +73,36 @@ class Game {
             backgroundColor : 0xd4dc5f
         });
         this.stageContainer.appendChild(this.app.view);
+        this.app.renderer.view.style['transform'] = 'translatez(0)'
 
         this.container = new PIXI.Container();
-        this.container.x = this.app.screen.width / 2;
-        this.container.y = this.app.screen.height / 2;
+        this.container.x = 0;
+        this.container.y = 0;
         this.app.stage.addChild(this.container);
 
-        // this.graphics = new PIXI.Graphics();
-        // this.graphics.beginFill(0xd4dc5f, 1);
-        // this.graphics.drawRect(0, 0, this.stageSize[0] * this.scale, this.stageSize[1] * this.scale);
-        // this.graphics.position.x = - this.graphics.width / 2;
-        // this.graphics.position.y = - this.graphics.height / 2;
+        this.graphics = new PIXI.Graphics();
+        this.graphics.lineStyle(0);
+        this.graphics.beginFill(0x0c5d8f);
+        // this.graphics.drawPolygon(new PIXI.Polygon(maskPts))
+        this.graphics.drawPolygon(maskPath)
+        this.graphics.endFill();
+        this.graphics.position.x = this.maskPos[0];
+        this.graphics.position.y = this.maskPos[1];
+        this.graphics.width = this.maskPos[2];
+        this.graphics.height = this.maskPos[3];
+
         this.container.interactive = true;
         this.container.on('pointerdown', (e) => { this.onPressDown(e); });
         this.container.on('pointermove', (e) => { this.onPressMove(e); });
         this.container.on('pointerup', (e) => { this.onPressUp(e); });
-        // this.grapcontainerhics.on('pointerupoutside', (e) => { this.onPressUp(e); });
-        // this.container.addChild(this.graphics);
+        this.container.on('pointerupoutside', (e) => { this.onPressUp(e); });
+        
     }
 
     loadAssets() {
         this.itemNames.forEach((item) => {
-            this.loader.add(item,`assets/images/${item}.png`);
+            if (item === 'mask') this.loader.add(item,`assets/images/${item}.svg`);
+            else this.loader.add(item,`assets/images/${item}.png`);
         });
         this.loader.load((loader, resources) => {
             this.ifReady = true;
@@ -98,37 +112,79 @@ class Game {
     }
 
     displayAssets(resources) {
+        let delayCount = 0;
         Object.entries(resources).forEach((item) => {
             const key = item[0];
             const value = item[1];
-
+            
             if (Array.isArray(itemPositions[key])) {
                 let multiSprites = [];
-                itemPositions[key].forEach((itemPos) => {
-                    let spriteItem = new PIXI.Sprite(value.texture);
-                    this.initGrowAndBounce(spriteItem, itemPos);
-                    this.animateGrowAndBounce(spriteItem, itemPos);
-                    this.app.stage.addChild(spriteItem);
-                    multiSprites.push(spriteItem);
-                });
+                
+                if (key == 'house2' || key == 'house4') {
+                    console.log(key)
+                    itemPositions[key].forEach((itemPos) => {
+                        let spriteItem = new PIXI.Sprite(value.texture);
+                        this.initLiftUp(spriteItem, itemPos);
+                        this.animateLiftUp(spriteItem, itemPos, 0,
+                                                                itemPos.delay, 
+                                                                0);
+                        this.container.addChild(spriteItem);
+                        multiSprites.push(spriteItem);    
+                    });
+                } else if (key == 'tree1' ) {
+                    console.log(key)
+                    let treeCount = 0;
+                    itemPositions[key].forEach((itemPos) => {
+                        let spriteItem = new PIXI.Sprite(value.texture);
+                        this.initLiftUp(spriteItem, itemPos);
+                        this.animateLiftUp(spriteItem, itemPos, 0.05,
+                                                                0.3, 
+                                                                treeCount);
+                        this.container.addChild(spriteItem);
+                        multiSprites.push(spriteItem);    
+                        treeCount++;
+                    });
+                } else {
+                    itemPositions[key].forEach((itemPos) => {
+                        let spriteItem = new PIXI.Sprite(value.texture);
+                        this.initLiftUp(spriteItem, itemPos);
+                        this.animateLiftUp(spriteItem, itemPos, 0.1,
+                                                                0.8, 
+                                                                delayCount);
+                        this.container.addChild(spriteItem);
+                        multiSprites.push(spriteItem);
+    
+                        delayCount++;
+                    });
+                }
+                
                 this.sprites[key] = multiSprites;
             } else {
                 let spriteItem = new PIXI.Sprite(value.texture);
                 
                 if (key === 'road') {
                     this.initStatic(spriteItem, itemPositions[key]);
-                } else if (key === 'fountain1' || key === 'hospital1' || key === 'building1') {
-                    this.initGrowAndBounce(spriteItem, itemPositions[key]);
-                    this.animateGrowAndBounce(spriteItem, itemPositions[key], itemPositions[key].delay);
+                    this.container.addChild(spriteItem);
+                    // this.container.addChild(this.graphics);
+                } else if (key === 'fountain1' || key === 'hospital1' || key === 'building1' ||
+                           key === 'house1' || key === 'house3' || key === 'house5') {
+                    this.initLiftUp(spriteItem, itemPositions[key]);
+                    console.log("which one " + key)
+                    this.animateLiftUp(spriteItem, itemPositions[key], 0, 
+                                                                       itemPositions[key].delay, 
+                                                                       0);
+                    this.container.addChild(spriteItem);
                 } else {
-                    this.initGrowAndBounce(spriteItem, itemPositions[key]);
-                    this.animateGrowAndBounce(spriteItem, itemPositions[key]);
+                    this.initLiftUp(spriteItem, itemPositions[key]);
+                    this.animateLiftUp(spriteItem, itemPositions[key], 0.15,
+                                                                       0.8, 
+                                                                       delayCount);
+                    this.container.addChild(spriteItem);
                 }
-                this.app.stage.addChild(spriteItem);
                 this.sprites[key] = spriteItem;
+                delayCount++;
             }
         });
-        console.log(this.sprites)
     }
 
     initStatic(spriteItem, itemPos) {
@@ -169,6 +225,36 @@ class Game {
         });
     }
 
+    initLiftUp(spriteItem, itemPos) {
+        spriteItem.anchor.set(0.5);
+        spriteItem.x = itemPos.x * this.scale;
+        spriteItem.y = itemPos.y * this.scale + 20;
+        spriteItem.width = itemPos.w * this.scale;
+        spriteItem.height = itemPos.h * this.scale;
+        spriteItem.alpha = 0;
+    }
+
+    animateLiftUp(spriteItem, itemPos, delay=Math.random(), 
+                                       delayBase=0, 
+                                       delayCount=0) {
+        var animation = new TimelineLite();
+        var animation2 = new TimelineLite();
+        animation.delay(delayBase + delay * delayCount);
+        animation.fromTo(spriteItem, 0.7, {
+            y: itemPos.y * this.scale + 20, 
+            ease:Power3.easeOut
+        }, {
+            y: itemPos.y * this.scale, 
+            ease:Power3.easeOut
+        });
+        animation2.delay(delayBase + delay * delayCount);
+        animation2.fromTo(spriteItem, 0.5, {
+            alpha: 0,
+        }, {
+            alpha: 1,
+        });
+    }
+
     onPressDown(e) {
         if (e.data.global.y < window.innerHeight && this.ifReady) {
             this.pointerStartPos = {
@@ -199,20 +285,25 @@ class Game {
         if (this.isMouseDown) {	 
             if (! this.isDragging) {
                 if (Math.abs(this.pointerStartPos.x - currPos.x) > 5 || Math.abs(this.pointerStartPos.y - currPos.y) > 5) {
-                    this.graphicsStartPos = {
-                        x: this.graphics.position.x, 
-                        y: this.graphics.position.y
+                    this.containerStartPos = {
+                        x: this.container.position.x, 
+                        y: this.container.position.y
                     };
                     this.isDragging = true;
                     this.body.classList.add('dragging');
                 }
             } else {
-                // this.graphics.position.x = ((currPos.x - this.pointerStartPos.x) / scale) + this.graphicsStartPos.x;
-                // this.graphics.position.y = ((currPos.y - this.pointerStartPos.y) / scale) + this.graphicsStartPos.y;
-                // Object.values(this.sprites).forEach((item) => {
-                //     item.position.x = ((currPos.x - this.pointerStartPos.x) / 30) + item.position.x;
-                //     item.position.y = ((currPos.y - this.pointerStartPos.y) / 30) + item.position.y;
-                // });
+                const newPos = ((currPos.x - this.pointerStartPos.x) / scale) + this.containerStartPos.x;
+                console.log(this.container.width - this.app.screen.width)
+                // const leftMark = 
+                // if (newPos > 10) {
+                //     this.container.position.x = 10;
+                // } else if (newPos < -330) {
+                //     this.container.position.x = -330;
+                // } else {
+                    this.container.position.x = newPos;
+                // }
+                // this.container.position.y = ((currPos.y - this.pointerStartPos.y) / scale) + this.containerStartPos.y;
             }
         }
     }
@@ -238,8 +329,8 @@ class Game {
 
     onResize(winW, winH) {
         this.app.renderer.resize(winW, winH);
-        this.container.position.x = this.app.screen.width / 2;
-        this.container.position.y = this.app.screen.height / 2;
+        this.container.position.x = - (this.container.width - this.app.screen.width) / 2;
+        this.container.position.y = 0;
     }
 
     obDesktopToMobile() {
