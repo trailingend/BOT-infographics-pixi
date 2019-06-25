@@ -1,0 +1,86 @@
+$green: #697687;
+$colors-list: #F15D3F #FF822E #FFCF01 #AED630 #739849 #44C8F5 #0078AE #904799 #F46EA5;
+
+.site-menu {
+	position: fixed;
+	left: 25px;
+	padding: 20px;
+	bottom: -235px;
+	padding-bottom: 5px;
+	color: $green;
+	background-color: #ffffff;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+	transition: bottom 0.3s;
+	animation: pulse 3s infinite;
+
+	&.show {
+		bottom: 0;
+		#icon-plus {
+			width: 25px;
+			transform: rotate(45deg);
+		}
+	}
+
+	.menu-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		cursor: pointer;
+	}
+
+	#icon-plus, #icon-pin {
+		float: left;
+		width: 25px;
+	}
+
+	#icon-plus {
+		width: 20px;
+		transition: all 0.3s;
+	}
+
+	h3 {
+		display: inline;
+		margin-left: 0.5rem;
+		text-transform: uppercase;
+		font-weight: 700;
+		font-size: 1.1rem;
+		letter-spacing: 3px;
+		color: #51C1AF;
+	}
+	
+	li {
+		font-size: 1rem;
+		font-weight: 700;
+		margin: 2.5px 0;
+		padding-left:  calc(2rem - 5px);
+		border-left-width: 5px;
+		border-left-style: solid;
+		transition: all 0.3s;
+		cursor: pointer;
+		
+		@each $current-color in $colors-list {
+			$i: index($colors-list, $current-color);
+			&:nth-child(#{$i}) { 
+				border-left-color: $current-color;
+			}
+		}
+
+		&:hover {
+			padding-left: calc(2rem - 15px);
+			border-left-width: 15px;
+		}
+	}
+}
+
+@keyframes pulse {
+	0% {
+		box-shadow: 0 0 0 0 rgba(100, 100, 240, 0.4);
+	}
+	50% {
+		box-shadow: 0 0 0 10px rgba(100, 100, 240, 0);
+	}
+	100% {
+		box-shadow: 0 0 0 0 rgba(100, 100, 240, 0);
+	}
+}

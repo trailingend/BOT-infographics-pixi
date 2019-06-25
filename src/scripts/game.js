@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { TweenMax, TimelineLite, Power3, PixiPlugin } from "gsap/All";
+import { TweenMax, TimelineLite, Linear, Power3, PixiPlugin } from "gsap/All";
 import { itemPositions, hospitalInfo, maskPath } from './utils';
 
 import '../assets/images/road.png';
@@ -22,6 +22,7 @@ import '../assets/images/tree3.png';
 import '../assets/images/sign1.png';
 import '../assets/images/light1.png';
 import '../assets/images/traffic1.png';
+import '../assets/images/ambulance1.png';
 
 PixiPlugin.registerPIXI(PIXI);
 
@@ -29,7 +30,7 @@ class Game {
     constructor() {
         this.body = document.querySelector("body");
         this.stageContainer = document.querySelector('#main-stage');
-        this.stageSize = [1920, 1080];
+        this.stageSize = [1915, 1080];
         this.maskPos = itemPositions.mask;
         this.positions = itemPositions;
 
@@ -41,7 +42,7 @@ class Game {
         this.itemNames = ['road', 'fountain1', 'tree1', 'hospital1',
                           'mask', 'building1', 'tree3', 'bench1', 'bench2',
                           'house1', 'house2', 'house3', 'house4', 'house5',
-                          'tree2', 'light1', 'traffic1', 'sign1',
+                          'tree2', 'light1', 'traffic1', 'sign1', 'ambulance1'
                           ];
         this.sprites = {};
 
@@ -54,14 +55,15 @@ class Game {
         this.zoomed = false;
         this.scale = 1; 
         this.yAnimationOffset = 20;
-        this.displayHRatio = 1075 / 1521;
-        this.displayWRatio = 1815 / 2020;
+        this.displayHRatio = 1070 / 1212;
+        this.displayWRatio = 1920 / 2119;
+        this.displayWOffset = 35;
         
     }
 
     init(winW, winH) {
         this.stageSize = [winW, winH];
-        if (winW / winH < 1) this.scale = winW / 1920;
+        if (winW / winH < 1) this.scale = winW / 1915;
         else this.scale = winH / 1080;
         this.loader = new PIXI.Loader();
         this.loadAssets(winW, winH);
@@ -160,6 +162,7 @@ class Game {
             }
         });
         this.centerContainer();
+        this.startAnimationLoop();
     }
 
     initStatic(spriteItem, itemPos) {
@@ -227,6 +230,34 @@ class Game {
         }, {
             alpha: 1,
         });
+    }
+
+    animateAmbulance(spriteItem) {
+        var animation = new TimelineLite();
+        animation.fromTo(spriteItem, 5, {
+            x: 779 * this.scale,
+            y: 521 * this.scale, 
+            ease: Linear.easeNone
+        }, {
+            x: 670 * this.scale,
+            y: 582 * this.scale, 
+            ease: Linear.easeNone
+        }).to(spriteItem.scale, 0, {
+            x: - this.scale,
+            ease: Linear.easeNone
+        }).to(spriteItem, 15, {
+            x: 1099 * this.scale,
+            y: 827 * this.scale,
+            ease: Linear.easeNone
+        });
+    }
+
+    startAnimationLoop() {
+        const ambulance = this.sprites.ambulance1[1];
+        setTimeout(() => {
+            this.animateAmbulance(ambulance);
+        }, 6000);
+        
     }
 
     onPressDown(e) {
@@ -320,9 +351,7 @@ class Game {
 
     centerContainer() {
         const displayWidth = this.container.width * this.displayWRatio;
-        this.container.position.x = - (displayWidth - this.app.screen.width) / 2;
-        console.log(displayWidth + " " + this.app.screen.width + " " + this.container.width + " " + (- (displayWidth - this.app.screen.width) / 2)
-        + " " + (- (this.container.width - this.app.screen.width) / 2));
+        this.container.position.x = - (displayWidth - this.app.screen.width) / 2 + this.displayWOffset * this.displayWRatio;
         
         const displayHeight = this.container.height * this.displayHRatio;
         if (displayHeight >= this.app.screen.height) this.container.position.y = 0;

@@ -4,13 +4,14 @@ import { retrieveWindowWidth,
          checkIfMobileToDesktop, 
          testPlatform } from './utils';
 import Game from './game';
+import Menu from './menu';
 
 
 
 const widthLimit = 960;
 let platform;
 let winW, winH;
-let game;
+let game, menu;
 
 
 /*
@@ -24,12 +25,14 @@ window.addEventListener('load', (event) => {
 
     // ================ Main content goes here =================
     game = new Game();
+    menu = new Menu();
     game.init(winW, winH);
+    menu.init();
     // ================ Main content ends here =================
 
     if (winW <= widthLimit) {
         // ================ Mobild resize calls go here =================
-        game.onResize(winW, winH);
+        // game.onResize(winW, winH);
         // ================ Mobild resize calls go here =================
     }
 });
