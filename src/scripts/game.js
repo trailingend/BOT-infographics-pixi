@@ -1,6 +1,8 @@
 import * as PIXI from 'pixi.js';
 import { TweenMax, TimelineLite, Linear, Power3, PixiPlugin } from "gsap/All";
-import { itemPositions, hospitalInfo, maskPath } from './utils';
+import { itemPositions, hospitalInfo, 
+         maskPath, textSetting, 
+         ambulanceAnimationInfo, carAnimationInfo } from './utils';
 
 import '../assets/images/road.png';
 import '../assets/images/bench1.png';
@@ -13,9 +15,6 @@ import '../assets/images/house5.png';
 import '../assets/images/fountain1.png';
 import '../assets/images/building1.png';
 import '../assets/images/hospital1.png';
-import '../assets/images/mask.svg';
-import '../assets/images/car1.png';
-import '../assets/images/ambulance1.png';
 import '../assets/images/tree1.png';
 import '../assets/images/tree2.png';
 import '../assets/images/tree3.png';
@@ -23,6 +22,9 @@ import '../assets/images/sign1.png';
 import '../assets/images/light1.png';
 import '../assets/images/traffic1.png';
 import '../assets/images/ambulance1.png';
+import '../assets/images/ambulance2.png';
+import '../assets/images/car1.png';
+import '../assets/images/car2.png';
 
 PixiPlugin.registerPIXI(PIXI);
 
@@ -36,13 +38,15 @@ class Game {
 
         this.app = null;
         this.graphics = null;
+        this.text = null;
         this.camera = null;
         this.container = null;
         this.loader = null;
         this.itemNames = ['road', 'fountain1', 'tree1', 'hospital1',
-                          'mask', 'building1', 'tree3', 'bench1', 'bench2',
+                          'building1', 'car1', 'car2', 'ambulance1', 'ambulance2', 
+                          'tree3', 'bench1', 'bench2', 
                           'house1', 'house2', 'house3', 'house4', 'house5',
-                          'tree2', 'light1', 'traffic1', 'sign1', 'ambulance1'
+                          'tree2', 'light1', 'traffic1', 'sign1'
                           ];
         this.sprites = {};
 
@@ -98,7 +102,8 @@ class Game {
         this.graphics.alpha = 0;
         // this.graphics.tint = hospitalInfo[0].color;
         console.log(this.graphics);
-        this.colorSwap(2);
+        this.setupText('all');
+        this.colorSwap('all');
 
         this.container.interactive = true;
         this.container.on('pointerdown', (e) => { this.onPressDown(e); });
@@ -131,16 +136,19 @@ class Game {
 
                 itemPositions[key].forEach((itemPos) => {
                     let spriteItem = new PIXI.Sprite(value.texture);
-                    this.initLiftUp(spriteItem, itemPos);
-                    this.animateLiftUp(spriteItem, itemPos, 0,
-                                                            itemPos.delay, 
-                                                            0);
+                    if (key === 'ambulance2') {
+                        this.initHidden(spriteItem, itemPos);
+                    } else {
+                        this.initLiftUp(spriteItem, itemPos);
+                        this.animateLiftUp(spriteItem, itemPos, 0, itemPos.delay, 0);
+                    }
                     this.container.addChild(spriteItem);
                     multiSprites.push(spriteItem);    
                 });
             
                 if (key === 'tree1') {
                     this.container.addChild(this.graphics);
+                    this.container.addChild(this.text);
                     this.animateLiftUp(this.graphics, 'mask', 0, itemPositions['mask'].delay, 0);
                 }
 
@@ -151,12 +159,14 @@ class Game {
                 if (key === 'road') {
                     this.initStatic(spriteItem, itemPositions[key]);
                     this.container.addChild(spriteItem);
-                    
+                } else if (key === 'car1' || key === 'car2') {
+                    this.initHidden(spriteItem, itemPositions[key]);
+                    this.container.addChild(spriteItem);
                 } else {
                     this.initLiftUp(spriteItem, itemPositions[key]);
                     this.animateLiftUp(spriteItem, itemPositions[key], 0, itemPositions[key].delay, 0);
                     this.container.addChild(spriteItem);
-                } 
+                }
                 this.sprites[key] = spriteItem;
                 delayCount++;
             }
@@ -171,6 +181,15 @@ class Game {
         spriteItem.y = itemPos.y * this.scale;
         spriteItem.width = itemPos.w * this.scale;
         spriteItem.height = itemPos.h * this.scale;
+    }
+
+    initHidden(spriteItem, itemPos) {
+        spriteItem.anchor.set(0.5);
+        spriteItem.x = itemPos.x * this.scale;
+        spriteItem.y = itemPos.y * this.scale;
+        spriteItem.width = itemPos.w * this.scale;
+        spriteItem.height = itemPos.h * this.scale;
+        spriteItem.alpha = 0;
     }
 
     initGrowAndBounce(spriteItem, itemPos) {
@@ -232,32 +251,56 @@ class Game {
         });
     }
 
-    animateAmbulance(spriteItem) {
+    animateWithTimeline(spriteItem1, spriteItem2, speed, info) {
+        const initScaleX1 = spriteItem1.scale.x;
+        const initScaleX2 = spriteItem2.scale.x;
         var animation = new TimelineLite();
-        animation.fromTo(spriteItem, 5, {
-            x: 779 * this.scale,
-            y: 521 * this.scale, 
-            ease: Linear.easeNone
-        }, {
-            x: 670 * this.scale,
-            y: 582 * this.scale, 
-            ease: Linear.easeNone
-        }).to(spriteItem.scale, 0, {
-            x: - this.scale,
-            ease: Linear.easeNone
-        }).to(spriteItem, 15, {
-            x: 1099 * this.scale,
-            y: 827 * this.scale,
-            ease: Linear.easeNone
+
+        info.forEach(animationInfo => {
+            const spriteItem = (animationInfo.whichSprite === 'first') ? spriteItem1 : spriteItem2;
+            const initScaleX = (animationInfo.whichSprite === 'first') ? initScaleX1 : initScaleX2;
+            if (animationInfo.name === 'location') {
+                animation.to(spriteItem, speed / 7 * animationInfo.timeProportion, {
+                    x: animationInfo.x * this.scale,
+                    y: animationInfo.y * this.scale,
+                    alpha: animationInfo.alpha,
+                    ease: animationInfo.ease
+                });
+            } else if (animationInfo.name === 'opacity') {
+                animation.to(spriteItem, 0, {
+                    alpha: animationInfo.alpha,
+                    ease: animationInfo.ease
+                });
+            } else if (animationInfo.name === 'reflect') {
+                animation.to(spriteItem.scale, 0, {
+                    x: animationInfo.reflectScale * initScaleX,
+                    ease: animationInfo.ease
+                });
+            }
         });
     }
 
+    animateAmbulance(spriteItem1, spriteItem2) {
+        const speed = 1;
+        this.animateWithTimeline(spriteItem1, spriteItem2, speed, ambulanceAnimationInfo);
+    }
+
+    animateCar(spriteItem1, spriteItem2) {
+        const speed = 2;
+        this.animateWithTimeline(spriteItem1, spriteItem2, speed, carAnimationInfo);
+    }
+
     startAnimationLoop() {
-        const ambulance = this.sprites.ambulance1[1];
+        const ambulance1 = this.sprites.ambulance1[1];
+        const ambulance2 = this.sprites.ambulance2[1];
+        const car1 = this.sprites.car1;
+        const car2 = this.sprites.car2;
         setTimeout(() => {
-            this.animateAmbulance(ambulance);
+            this.animateCar(car1, car2);
         }, 6000);
-        
+        setTimeout(() => {
+            this.animateAmbulance(ambulance1, ambulance2);
+        }, 20000);
     }
 
     onPressDown(e) {
@@ -304,9 +347,41 @@ class Game {
         }
     }
 
-    colorSwap(index) {
+    colorSwap(term) {
+        const item = hospitalInfo.find((elem)=> { return elem.site == term; });
         TweenMax.to(this.graphics, 0.8, {
-            pixi: {tint: hospitalInfo[index].color}
+            pixi: {tint: item.color}
+        });
+    }
+
+    setupText(term='all') {
+        const item = hospitalInfo.find((elem)=> { return elem.site == term; });
+        const style = new PIXI.TextStyle({
+            fill: "white",
+            fontSize: textSetting.fontSize,
+            fontWeight: textSetting.fontWeight,
+            letterSpacing: textSetting.letterSpacing,
+            wordWrap: true,
+            wordWrapWidth: textSetting.wordWrapWidth * this.scale
+        });
+        this.text = new PIXI.Text(item.name, style);
+        this.text.anchor.set(0.5)
+        this.text.x = textSetting.center.x * this.scale;
+        this.text.y = textSetting.center.y * this.scale;
+        this.text.skew.y = -0.5;
+    }
+
+    textSwap(term) {
+        const item = hospitalInfo.find((elem)=> { return elem.site == term; });
+        this.text.text = item.name;
+        this.text.scale.x = item.scale;
+        this.text.scale.y = item.scale;
+
+        var animation = new TimelineLite();
+        animation.fromTo(this.text, 0.8, {
+            alpha: 0
+        }, {
+            alpha: 1
         });
     }
 

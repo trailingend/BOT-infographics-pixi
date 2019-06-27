@@ -1,4 +1,6 @@
 
+import { Linear, Power1 } from "gsap/All";
+
 export const retrieveWindowWidth = (platform) => {
     if( window.screen.width && ! platform.isDesktop){
         return window.screen.width;
@@ -66,7 +68,7 @@ export const testPlatform = () => {
 
 export const itemPositions = {
     'road': { x: 1045, y: 717, w: 2076, h: 1011, delay: 0 },
-    'mask': { x: 122, y: 76, w: 697, h: 583, delay: 0 },
+    'mask': { x: 124, y: 63, w: 697, h: 596, delay: 0 },
     'hospital1': { x: 469, y: 336, w: 713, h: 654, delay: 0 },
     'building1': { x: 1261, y: 355, w: 366, h: 370, delay: 0.1 },
     'house1': { x: 818, y: 813, w: 272, h: 207, delay: 0.2 },
@@ -112,51 +114,413 @@ export const itemPositions = {
     'sign1': { x: 945, y: 663, w: 36, h: 95, delay: 2.8 },
     'traffic1': { x: 982, y: 805, w: 28, h: 117, delay: 3.5 },
     'ambulance1': [{ x: 734, y: 488, w: 114, h: 103, delay: 3.1 },
-                   { x: 779, y: 521, w: 114, h: 103, delay: 3.2 }]
+                   { x: 779, y: 521, w: 114, h: 103, delay: 3.2 }],
+    'ambulance2': [{ x: 734, y: 488, w: 114, h: 103, delay: 3.1 },
+                    { x: 779, y: 521, w: 114, h: 103, delay: 3.2 }],
+    'car1': { x: 1571, y: 563, w: 122, h: 82, delay: 3.2 },
+    'car2': { x: 1791, y: 685, w: 122, h: 82, delay: 3.2 },
 
 }
 
 export const hospitalInfo = [{
-        name: 'All',
-        color: '#f15d3f',   
+        site: 'all',
+        name: 'VCH',
+        color: '#f15d3f', 
+        scale: 1
     }, {
-        name: 'Vancouver',
-        color: '#ff822e',   
+        site: 'vancouver',
+        name: 'VANCOUVER',
+        color: '#ff822e', 
+        scale: 0.33,
     }, {
-        name: 'Richmond',
+        site: 'richmond',
+        name: 'RICHMOND',
         color: '#ffcf04',   
+        scale: 0.38,
     }, {
-        name: 'Costal',
+        site: 'coastal',
+        name: 'COASTAL',
         color: '#aed630',   
+        scale: 0.44,
     }, {
-        name: 'North Vancouver',
+        site: 'north-vancouver',
+        name: 'NORTH VANCOUVER',
         color: '#739849',   
+        scale: 0.33,
     }, {
-        name: 'Squamish',
-        color: '#44c8f5',   
+        site: 'squamish',
+        name: 'SQUAMISH',
+        color: '#44c8f5',
+        scale: 0.4,
     }, {
-        name: 'Powell River',
+        site: 'powell-river',
+        name: 'POWELL RIVER',
         color: '#0c5d8f',   
+        scale: 0.45,
     }, {
-        name: 'Sechelt',
-        color: '#904799',   
+        site: 'sechelt',
+        name: 'SECHELT',
+        color: '#904799',  
+        scale: 0.45, 
     }, {
-        name: 'Whistler & Pemberton',
+        site: 'whistler-pemberton',
+        name: 'WHISTLER & PEMBERTON',
         color: '#f46ea5',   
+        scale: 0.33,
     }];
 
     export const maskPath = [
-        0, 232.1,
-        0.6, 473.2,
-        190.1, 583,
-        387, 465.3,
-        419.7, 486.3, 
-        689.8, 326.9,
-        689.4, 292.7,
-        691.7, 256.6,
-        696.1, 253.9,
-        697.5, 164.1,
-        666.9, 118.5,
-        666.7, 79.3,
-        484.4, 0
+        623.99, 377.51, 
+        690.98, 338.56, 
+        690.9, 305.63, 
+        689.99, 270.07, 
+        697.42, 265.82, 
+        697.29, 177.94, 
+        666.74, 132.19, 
+        666.62, 94.49, 
+        493.39, 0, 
+        342.8, 87.16, 
+        0, 244.99, 
+        0.41, 481.32, 
+        188.37, 596.5, 
+        386.36, 478.78, 
+        425.29, 504.13
     ];
+    
+    export const textSetting = {
+        center: { x: 544, y: 163 },
+        fontSize: 60,
+        fontWeight: 700,
+        letterSpacing: 2,
+        wordWrapWidth: 500
+    };
+    
+    export const ambulanceAnimationInfo = [{
+            name: 'location',
+            x: 670,
+            y: 582,
+            reflectScale: null,
+            alpha: 1,
+            ease: Power1.easeIn,
+            timeProportion: 7,
+            whichSprite: 'first'
+        }, {
+            name: 'reflect',
+            x: null,
+            y: null,
+            reflectScale: -1,
+            alpha: null,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'first'
+        }, {
+            name: 'location',
+            x: 1099,
+            y: 827,
+            reflectScale: null,
+            alpha: null,
+            ease: Linear.easeNone,
+            timeProportion: 23,
+            whichSprite: 'first'
+        }, {
+            name: 'opacity',
+            x: null,
+            y: null,
+            reflectScale: null,
+            alpha: 0,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'first'
+        }, {
+            name: 'location',
+            x: 1099,
+            y: 827,
+            reflectScale: null,
+            alpha: 1,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'second'
+        }, {
+            name: 'location',
+            x: 1566,
+            y: 560,
+            reflectScale: null,
+            alpha: 1,
+            ease: Linear.easeNone,
+            timeProportion: 28,
+            whichSprite: 'second'
+        }, {
+            name: 'location',
+            x: 1566,
+            y: 560,
+            reflectScale: null,
+            alpha: 1,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'first'
+        }, {
+            name: 'opacity',
+            x: null,
+            y: null,
+            reflectScale: null,
+            alpha: 0,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'second'
+        },  {
+            name: 'location',
+            x: 1985,
+            y: 796,
+            reflectScale: null,
+            alpha: 1,
+            ease: Linear.easeNone,
+            timeProportion: 23,
+            whichSprite: 'first'
+        }, {
+            name: 'reflect',
+            x: null,
+            y: null,
+            reflectScale: 1,
+            alpha: null,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'first'
+        }, {
+            name: 'location',
+            x: 1509,
+            y: 1091,
+            reflectScale: null,
+            alpha: 1,
+            ease: Linear.easeNone,
+            timeProportion: 28,
+            whichSprite: 'first'
+        }, {
+            name: 'opacity',
+            x: null,
+            y: null,
+            reflectScale: null,
+            alpha: 0,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'first'
+        }, {
+            name: 'location',
+            x: 1509,
+            y: 1091,
+            reflectScale: null,
+            alpha: 1,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'second'
+        }, {
+            name: 'reflect',
+            x: null,
+            y: null,
+            reflectScale: -1,
+            alpha: null,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'second'
+        }, {
+            name: 'location',
+            x: 670,
+            y: 582,
+            reflectScale: null,
+            alpha: 1,
+            ease: Linear.easeNone,
+            timeProportion: 44,
+            whichSprite: 'second'
+        }, {
+            name: 'location',
+            x: 670,
+            y: 582,
+            reflectScale: null,
+            alpha: 1,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'first'
+        }, {
+            name: 'opacity',
+            x: null,
+            y: null,
+            reflectScale: null,
+            alpha: 0,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'second'
+        }, {
+            name: 'location',
+            x: 779,
+            y: 521,
+            reflectScale: null,
+            alpha: 1,
+            ease: Power1.easeOut,
+            timeProportion: 7,
+            whichSprite: 'first'
+    }];
+
+    export const carAnimationInfo = [{
+            name: 'opacity',
+            x: null,
+            y: null,
+            reflectScale: null,
+            alpha: 0,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'first'
+        }, {
+            name: 'opacity',
+            x: null,
+            y: null,
+            reflectScale: null,
+            alpha: 1,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'second'
+        }, {
+            name: 'reflect',
+            x: null,
+            y: null,
+            reflectScale: -1,
+            alpha: null,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'second'
+        }, {
+            name: 'location',
+            x: 1577,
+            y: 562,
+            reflectScale: null,
+            alpha: 1,
+            ease: Linear.easeNone,
+            timeProportion: 12,
+            whichSprite: 'second'
+        }, {
+            name: 'opacity',
+            x: null,
+            y: null,
+            reflectScale: null,
+            alpha: 1,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'first'
+        }, {
+            name: 'opacity',
+            x: null,
+            y: null,
+            reflectScale: null,
+            alpha: 0,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'second'
+        }, {
+            name: 'reflect',
+            x: null,
+            y: null,
+            reflectScale: -1,
+            alpha: null,
+            ease: Linear.easeNone,
+            timeProportion: 0,
+            whichSprite: 'first'
+        }, {
+            name: 'location',
+            x: 394,
+            y: 1268,
+            reflectScale: null,
+            alpha: 1,
+            ease: Linear.easeNone,
+            timeProportion: 72,
+            whichSprite: 'first'
+    }];
+
+
+// // ========================= start car =========================
+// animation.to(spriteItem1, 0, {
+//     alpha: 0
+// }).to(spriteItem2, 0, {
+//     alpha: 1,
+// }).to(spriteItem2.scale, 0, {
+//     x: - initScaleX2,
+// }).to(spriteItem2, 8, {
+//     x: 1577 * this.scale,
+//     y: 562 * this.scale, 
+//     ease: Linear.easeNone
+// }).to(spriteItem1, 0, {
+//     alpha: 1,
+// }).to(spriteItem2, 0, {
+//     alpha: 0
+// }).to(spriteItem1.scale, 0, {
+//     x: - initScaleX1,
+// }).to(spriteItem1, 50, {
+//     x: 394 * this.scale,
+//     y: 1268 * this.scale, 
+//     ease: Linear.easeNone
+// })
+// // ========================= end car =========================
+
+
+
+// // ========================= start ambulance =========================
+// animation.fromTo(spriteItem1, 2, {
+//     x: 779 * this.scale,
+//     y: 521 * this.scale, 
+// }, {
+//     x: 670 * this.scale,
+//     y: 582 * this.scale, 
+//     ease: Linear.easeIn
+// }).to(spriteItem1.scale, 0, {
+//     x: - initScaleX1,
+// }).to(spriteItem1, 6.5, {
+//     x: 1099 * this.scale,
+//     y: 827 * this.scale,
+//     ease: Linear.easeNone
+// }).to(spriteItem1, 0, {
+//     alpha: 0,
+// }).to(spriteItem2, 0, {
+//     x: 1099 * this.scale,
+//     y: 827 * this.scale,
+//     alpha: 1,
+// }).to(spriteItem2, 8, {
+//     x: 1566 * this.scale,
+//     y: 560 * this.scale,
+//     ease: Linear.easeNone
+// }).to(spriteItem1, 0, {
+//     x: 1566 * this.scale,
+//     y: 560 * this.scale,
+//     alpha: 1,
+// }).to(spriteItem2, 0, {
+//     alpha: 0,
+// }).to(spriteItem1, 6.5, {
+//     x: 1985 * this.scale,
+//     y: 796 * this.scale,
+//     ease: Linear.easeNone
+// }).to(spriteItem1.scale, 0, {
+//     x: initScaleX1,
+// }).to(spriteItem1, 8, {
+//     x: 1509 * this.scale,
+//     y: 1091 * this.scale,
+//     ease: Linear.easeNone
+// }).to(spriteItem1, 0, {
+//     alpha: 0,
+// }).to(spriteItem2, 0, {
+//     x: 1509 * this.scale,
+//     y: 1091 * this.scale,
+//     alpha: 1,
+// }).to(spriteItem2.scale, 0, {
+//     x: - initScaleX2,
+// }).to(spriteItem2, 13.5, {
+//     x: 670 * this.scale,
+//     y: 582 * this.scale,
+//     ease: Linear.easeNone
+// }).to(spriteItem1, 0, {
+//     alpha: 1,
+//     x: 670 * this.scale,
+//     y: 582 * this.scale,
+// }).to(spriteItem2, 0, {
+//     alpha: 0,
+// }).to(spriteItem1, 2, {
+//     x: 779 * this.scale,
+//     y: 521 * this.scale,
+//     ease: Linear.easeOut
+// });
+// // ========================= end ambulance =========================

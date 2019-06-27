@@ -7,11 +7,11 @@ class Menu {
         this.selectedIndex = 0;
     }
 
-    init() {
-        this.addEventLister();
+    init(game) {
+        this.addEventLister(game);
     }
 
-    addEventLister() {
+    addEventLister(game) {
         this.header.addEventListener("click", () => {
             if (this.menuContainer.classList.contains("show")) {
                 this.menuContainer.classList.remove("show");
@@ -21,7 +21,8 @@ class Menu {
         });
         this.buttonItems.forEach((buttonItem) => {
             buttonItem.addEventListener("click", (e) => {
-                console.log(e.target.dataset.site);
+                game.colorSwap(e.target.dataset.site);
+                game.textSwap(e.target.dataset.site)
             });
         })
     }

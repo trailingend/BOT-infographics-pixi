@@ -27,7 +27,7 @@ window.addEventListener('load', (event) => {
     game = new Game();
     menu = new Menu();
     game.init(winW, winH);
-    menu.init();
+    menu.init(game);
     // ================ Main content ends here =================
 
     if (winW <= widthLimit) {
