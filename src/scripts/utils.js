@@ -68,57 +68,58 @@ export const testPlatform = () => {
 
 export const itemPositions = {
     'road': { x: 1045, y: 717, w: 2076, h: 1011, delay: 0 },
-    'mask': { x: 124, y: 63, w: 697, h: 596, delay: 0 },
-    'hospital1': { x: 469, y: 336, w: 713, h: 654, delay: 0 },
-    'building1': { x: 1261, y: 355, w: 366, h: 370, delay: 0.1 },
-    'house1': { x: 818, y: 813, w: 272, h: 207, delay: 0.2 },
-    'house2': [{ x: 613, y: 943, w: 222, h: 188, delay: 0.2 },
-               { x: 1534, y: 702, w: 222, h: 188, delay: 0.2 }],
-    'house3': { x: 1347, y: 810, w: 205, h: 218, delay: 0.2 },
-    'house4': [{ x: 1087, y: 973, w: 206, h: 192, delay: 0.2 },
-               { x: 1529, y: 917, w: 206, h: 192, delay: 0.2 }],
-    'house5': { x: 1742, y: 758, w: 272, h: 278, delay: 0.2 },
-    'fountain1': { x: 1102, y: 563, w: 316, h: 203, delay: 0.3 },
-    'bench1': [{ x: 693, y: 738, w: 69, h: 63, delay: 1.3 },
-               { x: 597, y: 792, w: 69, h: 63, delay: 1.8 },
-               { x: 605, y: 689, w: 69, h: 63, delay: 2.1 },
-               { x: 505, y: 749, w: 69, h: 63, delay: 1.9 },
-               { x: 522, y: 668, w: 69, h: 63, delay: 1.4 },
-               { x: 422, y: 722, w: 69, h: 63, delay: 1.9 },
-               { x: 491, y: 582, w: 69, h: 63, delay: 1.6 },
-               { x: 374, y: 651, w: 69, h: 63, delay: 1.5 }],
-    'bench2': [{ x: 1131, y: 446, w: 69, h: 63, delay: 2 },
-               { x: 1058, y: 401, w: 69, h: 63, delay: 1.7 }],
-    'tree1': [{ x: 230, y: 686, w: 77, h: 113, delay: 0.4 },
-              { x: 153, y: 642, w: 77, h: 113, delay: 0.5 },
-              { x: 80, y: 594, w: 77, h: 113, delay: 0.6 },
-              { x: 3, y: 540, w: 77, h: 113, delay: 0.7 },
-              { x: 96, y: 485, w: 77, h: 113, delay: 0.8 },
-              { x: 836, y: 283, w: 77, h: 113, delay: 0.9 },
-              { x: 913, y: 327, w: 77, h: 113, delay: 1 }],
-    'tree2': [{ x: 737, y: 711, w: 37, h: 43, delay: 2.4 },
-              { x: 645, y: 766, w: 37, h: 43, delay: 2.6 },
-              { x: 539, y: 824, w: 37, h: 43, delay: 2.2 },
-              { x: 447, y: 833, w: 37, h: 43, delay: 2.55 },
-              { x: 657, y: 666, w: 37, h: 43, delay: 2.35 },
-              { x: 556, y: 715, w: 37, h: 43, delay: 2.7 },
-              { x: 450, y: 776, w: 37, h: 43, delay: 2.25 },
-              { x: 374, y: 785, w: 37, h: 43, delay: 2.5 },
-              { x: 577, y: 629, w: 37, h: 43, delay: 2.45 },
-              { x: 471, y: 691, w: 37, h: 43, delay: 2.65 },
-              { x: 371, y: 742, w: 37, h: 43, delay: 2.3 }],
-    'tree3': [{ x: 1065, y: 313, w: 54, h: 87, delay: 1.1 },
-              { x: 1413, y: 500, w: 54, h: 87, delay: 1.2 }],
-    'light1': [{ x: 320, y: 659, w: 22, h: 99, delay: 4.2 },
-               { x: 853, y: 357, w: 22, h: 99, delay: 4.2 }],
-    'sign1': { x: 945, y: 663, w: 36, h: 95, delay: 2.8 },
-    'traffic1': { x: 982, y: 805, w: 28, h: 117, delay: 3.5 },
-    'ambulance1': [{ x: 734, y: 488, w: 114, h: 103, delay: 3.1 },
-                   { x: 779, y: 521, w: 114, h: 103, delay: 3.2 }],
-    'ambulance2': [{ x: 734, y: 488, w: 114, h: 103, delay: 3.1 },
-                    { x: 779, y: 521, w: 114, h: 103, delay: 3.2 }],
-    'car1': { x: 1571, y: 563, w: 122, h: 82, delay: 3.2 },
-    'car2': { x: 1791, y: 685, w: 122, h: 82, delay: 3.2 },
+    'mask': { x: 124, y: 63, w: 697, h: 596, delay: 0.2 },
+    'text': { x: 544, y: 163, w: 544, h: 163, delay: 0.2 },
+    'hospital1': { x: 469, y: 336, w: 713, h: 654, delay: 0.1 },
+    'building1': { x: 1261, y: 355, w: 366, h: 370, delay: 0.2 },
+    'house1': { x: 818, y: 813, w: 272, h: 207, delay: 0.3 },
+    'house2': [{ x: 613, y: 943, w: 222, h: 188, delay: 0.3 },
+               { x: 1534, y: 702, w: 222, h: 188, delay: 0.3 }],
+    'house3': { x: 1358, y: 803, w: 183, h: 196, delay: 0.3 },
+    'house4': [{ x: 1087, y: 973, w: 194, h: 181, delay: 0.3 },
+               { x: 1523, y: 895, w: 194, h: 181, delay: 0.3 }],
+    'house5': { x: 1729, y: 742, w: 272, h: 278, delay: 0.3 },
+    'fountain1': { x: 1102, y: 563, w: 316, h: 203, delay: 0.4 },
+    'bench1': [{ x: 693, y: 738, w: 69, h: 63, delay: 1.4 },
+               { x: 597, y: 792, w: 69, h: 63, delay: 1.9 },
+               { x: 605, y: 689, w: 69, h: 63, delay: 2.2 },
+               { x: 505, y: 749, w: 69, h: 63, delay: 2.0 },
+               { x: 522, y: 668, w: 69, h: 63, delay: 1.5 },
+               { x: 422, y: 722, w: 69, h: 63, delay: 2.1 },
+               { x: 491, y: 582, w: 69, h: 63, delay: 1.7 },
+               { x: 374, y: 651, w: 69, h: 63, delay: 1.6 }],
+    'bench2': [{ x: 1131, y: 446, w: 69, h: 63, delay: 2.2 },
+               { x: 1058, y: 401, w: 69, h: 63, delay: 1.8 }],
+    'tree1': [{ x: 230, y: 686, w: 77, h: 113, delay: 0.5 },
+              { x: 153, y: 642, w: 77, h: 113, delay: 0.6 },
+              { x: 80, y: 594, w: 77, h: 113, delay: 0.7 },
+              { x: 3, y: 540, w: 77, h: 113, delay: 0.8 },
+              { x: 96, y: 485, w: 77, h: 113, delay: 0.9 },
+              { x: 836, y: 283, w: 77, h: 113, delay: 1.0 },
+              { x: 913, y: 327, w: 77, h: 113, delay: 1.1 }],
+    'tree2': [{ x: 737, y: 711, w: 37, h: 43, delay: 2.5 },
+              { x: 645, y: 766, w: 37, h: 43, delay: 2.7 },
+              { x: 539, y: 824, w: 37, h: 43, delay: 2.3 },
+              { x: 447, y: 833, w: 37, h: 43, delay: 2.65 },
+              { x: 657, y: 666, w: 37, h: 43, delay: 2.45 },
+              { x: 556, y: 715, w: 37, h: 43, delay: 2.8 },
+              { x: 450, y: 776, w: 37, h: 43, delay: 2.35 },
+              { x: 374, y: 785, w: 37, h: 43, delay: 2.6 },
+              { x: 577, y: 629, w: 37, h: 43, delay: 2.55 },
+              { x: 471, y: 691, w: 37, h: 43, delay: 2.75 },
+              { x: 371, y: 742, w: 37, h: 43, delay: 2.4 }],
+    'tree3': [{ x: 1065, y: 313, w: 54, h: 87, delay: 1.2 },
+              { x: 1413, y: 500, w: 54, h: 87, delay: 1.3 }],
+    'light1': [{ x: 320, y: 659, w: 22, h: 99, delay: 4.4 },
+               { x: 853, y: 357, w: 22, h: 99, delay: 4.4 }],
+    'sign1': { x: 945, y: 663, w: 36, h: 95, delay: 2.9 },
+    'traffic1': { x: 982, y: 805, w: 28, h: 117, delay: 3.6 },
+    'ambulance1': [{ x: 734, y: 488, w: 114, h: 103, delay: 3.2 },
+                   { x: 779, y: 521, w: 114, h: 103, delay: 3.25 }],
+    'ambulance2': [{ x: 734, y: 488, w: 114, h: 103, delay: 3.2 },
+                    { x: 779, y: 521, w: 114, h: 103, delay: 3.25 }],
+    'car1': { x: 1563, y: 545, w: 122, h: 82, delay: 3.3 },
+    'car2': { x: 1795, y: 656, w: 122, h: 82, delay: 3.3 },
 
 }
 
@@ -188,7 +189,6 @@ export const hospitalInfo = [{
     ];
     
     export const textSetting = {
-        center: { x: 544, y: 163 },
         fontSize: 60,
         fontWeight: 700,
         letterSpacing: 2,
@@ -197,12 +197,12 @@ export const hospitalInfo = [{
     
     export const ambulanceAnimationInfo = [{
             name: 'location',
-            x: 670,
-            y: 582,
+            x: 642,
+            y: 593,
             reflectScale: null,
             alpha: 1,
             ease: Power1.easeIn,
-            timeProportion: 7,
+            timeProportion: 15,
             whichSprite: 'first'
         }, {
             name: 'reflect',
@@ -215,8 +215,8 @@ export const hospitalInfo = [{
             whichSprite: 'first'
         }, {
             name: 'location',
-            x: 1099,
-            y: 827,
+            x: 1105,
+            y: 865,
             reflectScale: null,
             alpha: null,
             ease: Linear.easeNone,
@@ -233,8 +233,8 @@ export const hospitalInfo = [{
             whichSprite: 'first'
         }, {
             name: 'location',
-            x: 1099,
-            y: 827,
+            x: 1105,
+            y: 865,
             reflectScale: null,
             alpha: 1,
             ease: Linear.easeNone,
@@ -242,8 +242,8 @@ export const hospitalInfo = [{
             whichSprite: 'second'
         }, {
             name: 'location',
-            x: 1566,
-            y: 560,
+            x: 1582,
+            y: 572,
             reflectScale: null,
             alpha: 1,
             ease: Linear.easeNone,
@@ -251,8 +251,8 @@ export const hospitalInfo = [{
             whichSprite: 'second'
         }, {
             name: 'location',
-            x: 1566,
-            y: 560,
+            x: 1582,
+            y: 572,
             reflectScale: null,
             alpha: 1,
             ease: Linear.easeNone,
@@ -269,8 +269,8 @@ export const hospitalInfo = [{
             whichSprite: 'second'
         },  {
             name: 'location',
-            x: 1985,
-            y: 796,
+            x: 1948,
+            y: 788,
             reflectScale: null,
             alpha: 1,
             ease: Linear.easeNone,
@@ -287,8 +287,9 @@ export const hospitalInfo = [{
             whichSprite: 'first'
         }, {
             name: 'location',
-            x: 1509,
-            y: 1091,
+            x: 1494,
+            y: 1057
+            ,
             reflectScale: null,
             alpha: 1,
             ease: Linear.easeNone,
@@ -305,8 +306,9 @@ export const hospitalInfo = [{
             whichSprite: 'first'
         }, {
             name: 'location',
-            x: 1509,
-            y: 1091,
+            x: 1498,
+            y: 1054
+            ,
             reflectScale: null,
             alpha: 1,
             ease: Linear.easeNone,
@@ -323,8 +325,8 @@ export const hospitalInfo = [{
             whichSprite: 'second'
         }, {
             name: 'location',
-            x: 670,
-            y: 582,
+            x: 698,
+            y: 574,
             reflectScale: null,
             alpha: 1,
             ease: Linear.easeNone,
@@ -332,8 +334,8 @@ export const hospitalInfo = [{
             whichSprite: 'second'
         }, {
             name: 'location',
-            x: 670,
-            y: 582,
+            x: 636,
+            y: 600,
             reflectScale: null,
             alpha: 1,
             ease: Linear.easeNone,
@@ -355,7 +357,7 @@ export const hospitalInfo = [{
             reflectScale: null,
             alpha: 1,
             ease: Power1.easeOut,
-            timeProportion: 7,
+            timeProportion: 15,
             whichSprite: 'first'
     }];
 
@@ -388,8 +390,8 @@ export const hospitalInfo = [{
             whichSprite: 'second'
         }, {
             name: 'location',
-            x: 1577,
-            y: 562,
+            x: 1597,
+            y: 540,
             reflectScale: null,
             alpha: 1,
             ease: Linear.easeNone,
@@ -424,8 +426,8 @@ export const hospitalInfo = [{
             whichSprite: 'first'
         }, {
             name: 'location',
-            x: 394,
-            y: 1268,
+            x: 469,
+            y: 1188,
             reflectScale: null,
             alpha: 1,
             ease: Linear.easeNone,

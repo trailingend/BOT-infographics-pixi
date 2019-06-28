@@ -100,8 +100,7 @@ class Game {
         this.graphics.width = this.maskPos.w * this.scale;
         this.graphics.height = this.maskPos.h * this.scale;
         this.graphics.alpha = 0;
-        // this.graphics.tint = hospitalInfo[0].color;
-        console.log(this.graphics);
+
         this.setupText('all');
         this.colorSwap('all');
 
@@ -150,16 +149,14 @@ class Game {
                     this.container.addChild(this.graphics);
                     this.container.addChild(this.text);
                     this.animateLiftUp(this.graphics, 'mask', 0, itemPositions['mask'].delay, 0);
+                    this.animateLiftUp(this.text, 'text', 0, itemPositions['text'].delay, 0);
                 }
 
                 this.sprites[key] = multiSprites;
             } else {
                 let spriteItem = new PIXI.Sprite(value.texture);
                 
-                if (key === 'road') {
-                    this.initStatic(spriteItem, itemPositions[key]);
-                    this.container.addChild(spriteItem);
-                } else if (key === 'car1' || key === 'car2') {
+                if (key === 'car1' || key === 'car2') {
                     this.initHidden(spriteItem, itemPositions[key]);
                     this.container.addChild(spriteItem);
                 } else {
@@ -244,7 +241,19 @@ class Game {
             ease: Expo.easeOut
         });
         animation2.delay(delayBase + delay * delayCount);
-        animation2.fromTo(spriteItem, 0.5, {
+        animation2.fromTo(spriteItem, 0.3, {
+            alpha: 0,
+        }, {
+            alpha: 1,
+        });
+    }
+
+    animateFade(spriteItem, itemPos, delay=Math.random(), 
+                                     delayBase=0, 
+                                     delayCount=0) {
+        var animation = new TimelineLite();
+        animation.delay(delayBase + delay * delayCount);
+        animation.fromTo(spriteItem, 0.5, {
             alpha: 0,
         }, {
             alpha: 1,
@@ -300,7 +309,7 @@ class Game {
         }, 6000);
         setTimeout(() => {
             this.animateAmbulance(ambulance1, ambulance2);
-        }, 20000);
+        }, 12000);
     }
 
     onPressDown(e) {
@@ -358,16 +367,17 @@ class Game {
         const item = hospitalInfo.find((elem)=> { return elem.site == term; });
         const style = new PIXI.TextStyle({
             fill: "white",
-            fontSize: textSetting.fontSize,
-            fontWeight: textSetting.fontWeight,
-            letterSpacing: textSetting.letterSpacing,
+            fontSize: 60,
+            fontWeight: 700,
+            letterSpacing: 2,
             wordWrap: true,
-            wordWrapWidth: textSetting.wordWrapWidth * this.scale
+            wordWrapWidth: 500            
         });
         this.text = new PIXI.Text(item.name, style);
         this.text.anchor.set(0.5)
-        this.text.x = textSetting.center.x * this.scale;
-        this.text.y = textSetting.center.y * this.scale;
+        this.text.x = itemPositions.text.x * this.scale;
+        this.text.y = itemPositions.text.y * this.scale;
+        this.text.alpha = 0;
         this.text.skew.y = -0.5;
     }
 
