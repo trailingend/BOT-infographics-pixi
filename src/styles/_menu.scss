@@ -56,7 +56,8 @@ $colors-list: #F15D3F #FF822E #FFCF01 #AED630 #739849 #44C8F5 #0078AE #904799 #F
 		padding-left:  calc(2rem - 5px);
 		border-left-width: 5px;
 		border-left-style: solid;
-		transition: all 0.3s;
+		transition: padding-left 0.3s,
+					border-left-width 0.3s;
 		cursor: pointer;
 		
 		@each $current-color in $colors-list {

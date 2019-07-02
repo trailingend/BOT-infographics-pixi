@@ -371,7 +371,7 @@ class Game {
             fontWeight: 700,
             letterSpacing: 2,
             wordWrap: true,
-            wordWrapWidth: 500            
+            wordWrapWidth: 450            
         });
         this.text = new PIXI.Text(item.name, style);
         this.text.anchor.set(0.5)
